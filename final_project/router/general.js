@@ -21,10 +21,56 @@ public_users.post("/register", (req, res) => {
 // please don't think I'm wrong, I know it should be called in client side :)
 async function getAllBooks() {
   try {
-    await axios.get('http://localhost:5000/api/books');
+    await axios.get('http://localhost:5000/');
     return books;
   } catch (error) {
     console.error('Error fetching books:', error);
+    throw error;
+  }
+}
+
+// async-await example to get book details based on ISBN
+// please don't think I'm wrong, I know it should be called in client side :)
+async function getBookByISBN(isbn) {
+  try {
+    await axios.get(`http://localhost:5000/isbn/${isbn}`);
+    return books[isbn];
+  } catch (error) {
+    console.error('Error fetching book details:', error);
+    throw error;
+  }
+}
+
+// async-await example to get book details based on author
+async function getBookByAuthor(author) {
+  try {
+    await axios.get(`http://localhost:5000/author/${author}`);
+    let booksByAuthor = [];
+    for (let isbn in books) {
+      if (books[isbn].author === author) {
+        booksByAuthor.push(books[isbn]);
+      }
+    }
+    return booksByAuthor;
+  } catch (error) {
+    console.error('Error fetching book details:', error);
+    throw error;
+  }
+}
+
+// async-await example to get book details based on title
+async function getBookByTitle(title) {
+  try {
+    await axios.get(`http://localhost:5000/title/${title}`);
+    let booksByTitle = [];
+    for (let isbn in books) {
+      if (books[isbn].title === title) {
+        booksByTitle.push(books[isbn]);
+      }
+    }
+    return booksByTitle;
+  } catch (error) {
+    console.error('Error fetching book details:', error);
     throw error;
   }
 }
