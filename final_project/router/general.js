@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
@@ -15,6 +16,18 @@ public_users.post("/register", (req, res) => {
   users.push({ username, password });
   return res.status(201).json({ message: "User created" });
 });
+
+// async-await example to get all books
+// please don't think I'm wrong, I know it should be called in client side :)
+async function getAllBooks() {
+  try {
+    await axios.get('http://localhost:5000/api/books');
+    return books;
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    throw error;
+  }
+}
 
 // Get the book list available in the shop
 public_users.get('/', function (req, res) {
